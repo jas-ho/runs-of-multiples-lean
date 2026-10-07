@@ -1,0 +1,267 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Pp}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\DeclareMathOperator{\HH}{H}
+\newcommand{\Pplus}{P^{+}}
+
+\title{Runs of multiples in a finite set of integers:\\[2pt] $\sum k_i = \Theta(n \log n \log\log n)$}
+\author{}
+\date{7 October 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $S$ be a set of $n$ positive integers and, for $a\in S$, let $k(a)$ be the least positive integer $k$ with $ka\notin S$.
+We show that $\max_{|S|=n}\sum_{a\in S}k(a) = \Theta(n\log n\log\log n)$.
+In particular $S=\{1,\dots,n\}$, which gives $\sim n\ln n$, is not extremal: sets of smooth numbers beat it by a factor of order $\log\log n$.
+The upper bound is proved with an entropy argument along the prime factorisation; it shows that the excess over $n\log n$ comes entirely from primes below $(\log n)^4$.
+\end{abstract}
+
+\section{Statement}
+
+Throughout, $S$ is a finite set of positive integers with $|S|=n$.
+For $a\in S$ put
+\[
+  L(a) \coloneqq k(a)-1 = \max\{\ell : a,2a,\dots,\ell a\in S\} \ \ (\ge 1),
+  \qquad
+  A_t \coloneqq \{a\in S : L(a)\ge t\}.
+\]
+Then $\sum_{a}k(a) = n+\sum_a L(a) = n + \sum_{t\ge1}|A_t|$.
+Since $a,2a,\dots,L(a)a$ are distinct elements of $S$, we have $L(a)\le n$.
+Logarithms are natural unless written $\log_2$; $\Pplus(m)$ is the largest prime factor of $m$, $p,q$ always denote primes, and $\theta(x)=\sum_{p\le x}\log p$.
+
+\begin{theorem}\label{thm:main}
+There are absolute constants $0<c<C$ such that for all sufficiently large $n$,
+\[
+  c\, n\log n\log\log n \;\le\; \max_{|S|=n}\ \sum_{a\in S}k(a) \;\le\; C\, n\log n\log\log n .
+\]
+\end{theorem}
+
+\section{Lower bound: smooth numbers}
+
+For $y\ge 2$ and $x\ge1$ let $\Psi(x)=\Psi(x,y)=\#\{m\le x:\Pplus(m)\le y\}$ and consider
+\[
+  S = S(X,y) = \{m\le X : \Pplus(m)\le y\}.
+\]
+
+\paragraph{Key observation.}
+If $a\in S$ and $a\le X/y$, then every $j\le y$ satisfies $\Pplus(j)\le y$ and $aj\le X$, so $aj\in S$.
+Hence $L(a)\ge y$ and
+\begin{equation}\label{eq:lb-basic}
+  \sum_{a\in S}L(a) \;\ge\; y\cdot \Psi(X/y).
+\end{equation}
+So it suffices to choose $X$ with $\Psi(X/y)\ge c\,\Psi(X)$ and $\log\Psi(X)\asymp y/\log y$ (so that $y\asymp\log n\log\log n$).
+
+\begin{proposition}\label{prop:lb}
+There is an absolute constant $c>0$ such that for every sufficiently large $y$ there is $X$ for which $n=|S(X,y)|$ satisfies $\log n\asymp y/\log y$ and $\sum_{a\in S}k(a)\ge c\,n\log n\log\log n$.
+\end{proposition}
+
+\begin{proof}
+Put $X_i=e^{y}y^{i}$ for $0\le i\le K\coloneqq\lceil y/\log y\rceil$.
+
+\emph{Upper bound for $\Psi$ (Rankin's trick).}
+For $\sigma=1/\log y$,
+\[
+  \Psi(x)\le\sum_{\Pplus(m)\le y}(x/m)^{\sigma}=x^{\sigma}\prod_{p\le y}\bigl(1-p^{-\sigma}\bigr)^{-1}.
+\]
+As $\log X_K\le 2y+\log y$, we get $x^\sigma\le e\cdot e^{2y/\log y}$ for $x\le X_K$.
+For $\sqrt y<p\le y$ we have $p^{-\sigma}\le e^{-1/2}$, so the factor is at most $2.55$.
+For $p\le\sqrt y$, using $1-e^{-u}\ge u/2$ on $[0,1]$, the factor is at most $2\log y/\log p\le 3\log y$.
+Hence
+\[
+  \log\Psi(X_K)\le 1+\frac{2y}{\log y}+\pi(y)\log 2.55+\pi(\sqrt y)\log(3\log y)\le C_1\frac{y}{\log y}.
+\]
+
+\emph{Pigeonhole.}
+Since $\Psi(X_0)\ge1$, the $K$ ratios $\Psi(X_i)/\Psi(X_{i-1})$ have product at most $e^{C_1y/\log y}$, and $K\ge y/\log y$; so some ratio is at most $e^{C_1}$.
+Take $X=X_i$ for such an $i$.
+Then $\Psi(X/y)=\Psi(X_{i-1})\ge e^{-C_1}n$, and \eqref{eq:lb-basic} gives $\sum_a L(a)\ge e^{-C_1}\,y\,n$.
+
+\emph{Size.}
+All squarefree products of primes $\le y/2$ are below $4^{y/2}<e^{y}\le X$, so $n\ge 2^{\pi(y/2)}$; and $n\le\Psi(X_K)\le e^{C_1y/\log y}$.
+Thus $\log n\asymp y/\log y$, and from $\log n\le C_1 y/\log y$ we get $y\ge C_1^{-1}\log n\,(\log\log n-\log C_1)$.
+Therefore $\sum_a k(a)\ge\sum_a L(a)\ge e^{-C_1}y\,n\ge c\,n\log n\log\log n$.
+\end{proof}
+
+\paragraph{Every large $n$.}
+Proposition~\ref{prop:lb} gives sets $S_y$ of size $n_y$ with $\log 2\cdot\pi(y/2)\le\log n_y\le C_1y/\log y$.
+Given large $n$, choose $y$ with $C_1y/\log y\approx\frac12\log n$; then $n_y\le\sqrt n$ and $\log n_y\ge\delta\log n$ for an absolute $\delta>0$.
+Take $\lfloor n/n_y\rfloor$ copies $P_jS_y$ with distinct primes $P_j>\max S_y$, and pad with further primes different from all $P_j$.
+Every multiple of $P_js$ is divisible by $P_j$, while no element of another copy or of the padding is; so $L(P_js)=L_{S_y}(s)$ exactly, and the padding only adds nonnegative terms.
+Since at least $n/2$ elements lie in copies, $\sum k\ge c'n\log n\log\log n$ for every large $n$.
+
+\paragraph{Heuristic constant and numerics.}
+With $X=e^{y}$ the saddle-point asymptotics for $\Psi(x,y)$ give $\Psi(X/t)\approx t^{-\alpha}\Psi(X)$ with $y^{-\alpha}\approx\tfrac12$ and $\log n\approx(\log 4)\,y/\log y$, hence $\sum_a k(a)\approx\tfrac12 ny\approx\frac{1}{4\ln 2}\,n\ln n\ln\ln n\approx 0.36\,n\ln n\ln\ln n$.
+The table compares $\sum_a L(a)/(n\ln n)$; for $S=\{1,\dots,n\}$ this ratio is $1+(2\gamma-1)/\ln n+o(1/\ln n)\approx 1.01$.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+$S$ & $n$ (or $\ln n$) & $\sum L/(n\ln n)$ \\
+\midrule
+$\{1,\dots,n\}$ & $600{,}000$ & $1.012$ \\
+$23$-smooth $\le e^{23}$ (exact) & $261{,}598$ & $1.129$ \\
+$31$-smooth $\le e^{23.25}$ (exact) & $624{,}354$ & $1.167$ \\
+$97$-smooth $\le e^{97}$ (log-binned count) & $\ln n\approx 37$ & $1.39$ \\
+$197$-smooth $\le e^{197}$ (log-binned count) & $\ln n\approx 65$ & $1.54$ \\
+$397$-smooth $\le e^{397}$ (log-binned count) & $\ln n\approx 113$ & $1.78$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The ratio grows roughly linearly in $\log y$, i.e.\ like $\log\log n$.
+The effect is visible already for tiny $n$: $\{1,2,3,4,6\}$ has $\sum L=11$ against $10$ for $\{1,\dots,5\}$, and exhaustive search for $n\le 12$ (and simulated annealing up to $n=50$) finds smooth-type sets beating $\{1,\dots,n\}$ whenever they exist.
+
+\section{Upper bound}
+
+\subsection{Entropy along the prime factorisation}
+
+Fix a prime $q$.
+Every positive integer $m$ factors uniquely as $m=c\,r$, where every prime factor of $c$ is $<q$ and every prime factor of $r$ is $\ge q$.
+We write $c=c_q(m)$ and call it the \emph{$q$-smooth part}; $r$ is \emph{$q$-rough}.
+
+Let $X$ be uniformly distributed on $S$, and let $\HH$ denote Shannon entropy in nats, so $\HH(X)=\log n$.
+The variable $X$ is determined by its exponent vector $(v_p(X))_p$, and conditioning on $(v_p(X))_{p<q}$ is the same as conditioning on $c_q(X)$.
+Only the finitely many primes dividing some element of $S$ give nonzero terms, so listing primes in increasing order the chain rule gives
+\begin{equation}\label{eq:chain}
+  \log n \;=\; \sum_{q}\HH\bigl(v_q(X)\,\big|\,c_q(X)\bigr).
+\end{equation}
+Given $c_q(X)=c$, we have $X=c\,r$ with $r$ uniform on the \emph{fiber}
+\[
+  R_c\coloneqq\{r : r \text{ is $q$-rough and } cr\in S\},\qquad \Pp\bigl(c_q(X)=c\bigr)=|R_c|/n .
+\]
+
+\begin{lemma}[one-step entropy]\label{lem:step}
+Let $R$ be a finite set of positive integers, $q$ a prime, and $G\subseteq R$ with $qG\subseteq R$; put $\gamma=|G|/|R|$.
+If $r$ is uniform on $R$, then
+\[
+  \HH\bigl(v_q(r)\bigr)\;\ge\;\frac{\gamma}{2}\log\frac{2}{\gamma}.
+\]
+\end{lemma}
+
+\begin{proof}
+Let $\mu_k=\Pp(v_q(r)=k)$ and $b_k=\Pp(r\in G,\ v_q(r)=k)$.
+Multiplication by $q$ maps $G\cap\{v_q=k\}$ injectively into $\{v_q=k+1\}$, so $b_k\le\mu_{k+1}$; trivially $b_k\le\mu_k$.
+Let $j$ maximise $\mu_j$ and set $\varepsilon=1-\mu_j$.
+Then $\gamma=\sum_k b_k\le\sum_{k\ne j}\mu_k+\mu_{j+1}\le 2\varepsilon$.
+Let $h$ be the binary entropy function.
+If $\mu_j\le\frac12$, then $\HH\ge\log(1/\mu_j)\ge\log 2\ge h(\gamma/2)$.
+Otherwise $\gamma/2\le\varepsilon<\frac12$, and coarse-graining to the event $\{v_q=j\}$ gives $\HH\ge h(\varepsilon)\ge h(\gamma/2)$, since $h$ increases on $[0,\frac12]$.
+Finally $h(x)\ge x\log(1/x)$.
+\end{proof}
+
+\begin{lemma}[edge count]\label{lem:edges}
+For every finite set $T$ of positive integers,
+\[
+  \#\{(t,p): p \text{ prime},\ t\in T,\ tp\in T\}\;\le\;\frac{2}{\log 2}\,|T|\log|T| .
+\]
+\end{lemma}
+
+\begin{proof}
+Apply \eqref{eq:chain} to $X$ uniform on $T$.
+For a prime $p$ and a fiber $R_c$ (with respect to $p$), the set $G=\{r\in R_c: rp\in R_c\}$ satisfies $pG\subseteq R_c$, so Lemma~\ref{lem:step} with $\log(2/\gamma)\ge\log 2$ gives $\HH(v_p\mid c)\ge\frac{\log 2}{2}\,|G|/|R_c|$.
+Averaging over $c$, $\HH\bigl(v_p(X)\mid c_p(X)\bigr)\ge\frac{\log2}{2}\cdot\#\{t\in T:tp\in T\}/|T|$.
+Summing over $p$ and using \eqref{eq:chain} proves the claim.
+\end{proof}
+
+\begin{remark}
+Han's inequality (edge-isoperimetry in $\mathbb{Z}^d$) gives the sharp constant $1/(2\log 2)$ in Lemma~\ref{lem:edges}; any constant suffices below.
+\end{remark}
+
+Since $a\in A_q$ implies $aq\in S$, Lemma~\ref{lem:edges} yields
+\begin{equation}\label{eq:edges}
+  \sum_q|A_q|\;\le\;\frac{2}{\log 2}\,n\log n .
+\end{equation}
+Together with $\pi(L)\gg L/\log L$ and $L\le n$ this already gives $\sum_a L(a)=O(n\log^2 n)$.
+The rest of the argument replaces one factor $\log n$ by $\log\log n$.
+
+\subsection{Proof of the upper bound}
+
+Weight each pair $(a,q)$ with $q\le L(a)$ by $\log q$:
+\[
+  \Phi\coloneqq\sum_{a\in S}\theta\bigl(L(a)\bigr)=\sum_q|A_q|\log q .
+\]
+For such a pair write $a=c\,r$ with $c=c_q(a)$, and put
+\[
+  G_c\coloneqq\{r\in R_c : cr\in A_q\},\qquad \gamma_c\coloneqq|G_c|/|R_c| .
+\]
+Since $L(cr)\ge q$ implies $c\,(rq)\in S$ and $rq$ is $q$-rough, we have $qG_c\subseteq R_c$, so Lemma~\ref{lem:step} applies to every fiber.
+Call the fiber \emph{sparse} if $\gamma_c\le q^{-1/2}$ and \emph{dense} otherwise.
+Let $Q_0=(\log n)^4$ and sort the pairs $(a,q)$ with $q\le L(a)$ into four classes.
+
+\begin{enumerate}[label=\textbf{Class \arabic*.},leftmargin=*,itemsep=4pt]
+\item $q<Q_0$.
+By \eqref{eq:edges} the total weight is at most $\log Q_0\sum_q|A_q|\le\frac{8}{\log 2}\,n\log n\log\log n$.
+
+\item $q\ge Q_0$ and the fiber is sparse.
+Then $\log(2/\gamma_c)\ge\frac12\log q$, so Lemma~\ref{lem:step} gives
+\[
+  \Pp(c_q(X)=c)\,\HH(v_q\mid c)\;\ge\;\frac{|R_c|}{n}\cdot\frac{\gamma_c}{4}\log q=\frac{|G_c|\log q}{4n}.
+\]
+Summing over sparse fibers and all $q$ and using \eqref{eq:chain}, the total weight is at most $4\,n\log n$.
+
+\item $q\ge Q_0$, the fiber is dense, and $L(a)\ge 2q$.
+Let $E_c=\{r\in G_c : L(cr)\ge 2q\}$.
+For $r\in E_c$ and every prime $p\in(q,2q]$ we have $c\,(rp)\in S$ with $rp$ $q$-rough, so $rp\in R_c$.
+These are distinct edges of $R_c$, so Lemma~\ref{lem:edges} and density ($|R_c|<\sqrt q\,|G_c|$) give
+\[
+  |E_c|\,\bigl(\pi(2q)-\pi(q)\bigr)\le\frac{2}{\log 2}|R_c|\log n<\frac{2}{\log 2}\sqrt q\,|G_c|\log n .
+\]
+By the prime number theorem $\pi(2q)-\pi(q)\ge q/(2\log q)$ for large $q$ (any bound $\pi(2q)-\pi(q)\gg q/\log q$, e.g.\ from Chebyshev's estimates, suffices at the cost of constants), hence $|E_c|\le\frac{4}{\log 2}|G_c|\log n\,\log q/\sqrt q$.
+Since $\log^2q/\sqrt q$ decreases for $q\ge e^4$, the total weight of this class is at most
+\[
+  \frac{4}{\log2}\,\log n\cdot\frac{\log^2Q_0}{\sqrt{Q_0}}\sum_q|A_q| = O\bigl(n(\log\log n)^2\bigr).
+\]
+
+\item $q\ge Q_0$, the fiber is dense, and $L(a)<2q$, i.e.\ $L(a)/2<q\le L(a)$.
+\end{enumerate}
+
+A pair with $q\le L(a)/2$ never lies in Class~4.
+Therefore
+\[
+  \sum_{a\in S}\theta\bigl(L(a)/2\bigr)\;\le\;(\text{Class }1)+(\text{Class }2)+(\text{Class }3)\;=\;O(n\log n\log\log n).
+\]
+By Chebyshev, $\theta(x)\ge c_0x$ for $x\ge2$ with an absolute $c_0>0$, so $L(a)\le\frac{2}{c_0}\theta\bigl(L(a)/2\bigr)$ whenever $L(a)\ge4$.
+Hence
+\[
+  \sum_{a\in S}k(a)=n+\sum_{a\in S}L(a)\le 4n+\frac{2}{c_0}\,O(n\log n\log\log n)=O(n\log n\log\log n),
+\]
+which completes the proof of Theorem~\ref{thm:main}. \qed
+
+\section{Remarks}
+
+\begin{enumerate}[leftmargin=*,itemsep=4pt]
+\item \emph{Where the $\log\log n$ comes from.}
+Classes~2 and~3 show that pairs $(a,q)$ with $(\log n)^4\le q\le L(a)/2$ carry total weight only $O(n\log n)$, as in $\{1,\dots,n\}$; Class~4 (pairs with $q$ in the top half of the run) only affects the constant.
+The excess factor $\log\log n$ enters through Class~1, the primes below $(\log n)^4$, which is exactly where the smooth-number construction lives (it uses primes up to $\approx\log n\log\log n$).
+
+\item \emph{Why entropy and not just counting.}
+The edge bound \eqref{eq:edges} charges the prime $q$ only $\Pp(L(X)\ge q)$.
+In $\{1,\dots,n\}$ that is $\approx 1/q$, while $\HH(v_q(X)\mid c_q(X))\approx(\log q)/q$.
+The chain rule in increasing prime order captures this extra $\log q$ (the information about where the $q$-boundary sits) whenever fibers are sparse; in dense fibers almost every run stops before $2q$ (Class~3 is negligible).
+
+\item \emph{Constants.}
+They are not optimised.
+With $\theta(x)\sim x$ the argument gives roughly $\sum k\le 23\,n\ln n\ln\ln n$ (about $6$ if \eqref{eq:edges} is used with Han's constant), against $\approx0.36\,n\ln n\ln\ln n$ from the construction.
+The correct leading constant is left open.
+\end{enumerate}
+
+\end{document}

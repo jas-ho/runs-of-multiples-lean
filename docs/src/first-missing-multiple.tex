@@ -1,0 +1,340 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={The first missing multiple in a finite set},pdfsubject={Matching asymptotic bounds for the sum of first missing multipliers},pdfkeywords={number theory, extremal combinatorics, compression}}
+\setlist{itemsep=2pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Nzero}{\mathbb N_0}
+\newcommand{\rad}{\operatorname{rad}}
+
+\begin{document}
+\begin{center}
+{\Large The first missing multiple in a finite set}
+\end{center}
+\vspace{0.5em}
+\begin{abstract}
+For a finite set $S$ of positive integers, let $k_S(a)$ be the least positive integer $k$ for which $ka\notin S$.
+We prove that the maximum of $\sum_{a\in S}k_S(a)$ over sets of cardinality $n$ has order $n\log n\log\log n$.
+The upper bound follows by compressing prime exponents and double counting prime-multiplication pairs.
+A construction with separate constraints on small and large prime factors gives the matching lower bound.
+\end{abstract}
+
+\begin{theorem}\label{thm:main}
+There are absolute constants $c,C>0$ such that, for all sufficiently large $n$,
+\[
+c\,n\log n\log\log n
+\ \le\ 
+\max_{\substack{S\subset\N\\|S|=n}}\ \sum_{a\in S}k_S(a)
+\ \le\ 
+C\,n\log n\log\log n.
+\]
+\end{theorem}
+
+All logarithms are natural unless a base is indicated.
+The set $S=\{1,\ldots,n\}$ gives
+\[
+\sum_{a\in S}k_S(a)
+=n+\sum_{a=1}^n\left\lfloor\frac na\right\rfloor
+=n\log n+O(n),
+\]
+so it does not attain the correct order of growth.
+
+Write $r_S(a)=k_S(a)-1$ for $a\in S$.
+For $t\ge1$, define
+\[
+N_t(S)=\bigl|\{a\in\N:a,2a,\ldots,ta\in S\}\bigr|.
+\]
+Then
+\begin{equation}\label{eq:tails}
+\sum_{a\in S}k_S(a)=|S|+\sum_{t\ge1}N_t(S).
+\end{equation}
+The sums are finite because $r_S(a)\le |S|$.
+We use the classical Chebyshev estimates
+\begin{equation}\label{eq:primes}
+\vartheta(x):=\sum_{p\le x}\log p\asymp x,
+\qquad
+\pi(x)\asymp\frac{x}{\log x},
+\end{equation}
+where sums over $p$ run over primes.
+In particular, for the $j$-th prime $p_j$,
+\begin{equation}\label{eq:nth-prime}
+\log p_j=O(\log(2j)).
+\end{equation}
+An elementary justification of these estimates is included at the end.
+
+\section{Compression}
+
+\begin{lemma}\label{lem:intervals}
+Let $E_1,\ldots,E_s$ be finite subsets of $\Nzero$ and let $L_1,\ldots,L_s$ be nonnegative integers.
+Replacing each $E_i$ by $\{0,\ldots,|E_i|-1\}$ cannot decrease the number of integers $e\ge0$ satisfying
+\[
+e+\{0,\ldots,L_i\}\subseteq E_i\qquad(1\le i\le s).
+\]
+An initial interval of length zero is understood to be empty.
+\end{lemma}
+
+\begin{proof}
+For one set $E$ and one length $L$, there are at most $\max(|E|-L,0)$ valid starting positions.
+Indeed, if there are any, all valid starts together with the $L$ integers following the largest valid start are distinct elements of $E$.
+Thus the number satisfying all requirements is at most
+\[
+\min_i\max(|E_i|-L_i,0).
+\]
+After replacement, the valid starts for the $i$-th requirement form the initial interval of exactly this individual length.
+Their intersection attains the displayed upper bound.
+\end{proof}
+
+\newpage
+\begin{lemma}\label{lem:compression}
+Every finite $S\subset\N$ can be replaced by a set $T$ of the same cardinality such that $N_t(T)\ge N_t(S)$ for every $t\ge1$, and:
+\begin{enumerate}[label=(\roman*)]
+\item every divisor of an element of $T$ belongs to $T$;
+\item if $a\in T$, $q\mid a$, and $p<q$ are primes, then $ap/q\in T$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+We use two operations, each applied simultaneously to all chains in the indicated partition of $\N$.
+
+For a prime $p$, consider the chains
+\[
+b,bp,bp^2,\ldots,\qquad p\nmid b.
+\]
+If a chain contains $s$ elements of the current set, replace them by its first $s$ elements.
+Fix $t$ and a source chain, and write a possible source element as $a=bp^e$.
+For each $c\le t$ with $p\nmid c$, the multipliers $cp^h\le t$ have exponents $h=0,\ldots,L_c$.
+The requirements $a(cp^h)\in S$ therefore say
+\[
+e+\{0,\ldots,L_c\}\subseteq E_c,
+\qquad
+E_c=\{u\ge0:bc\,p^u\in S\}.
+\]
+Since $p\nmid bc$, each $E_c$ is the occupied set of a chain in this partition, and distinct $c$ give distinct target chains.
+Compression replaces every $E_c$ by an initial interval of the same size.
+Lemma~\ref{lem:intervals} shows that the number of valid sources in this chain cannot decrease.
+Summing over source chains proves that $N_t$ cannot decrease.
+
+For primes $p<q$, the second operation uses the finite chains
+\begin{equation}\label{eq:pq-chain}
+bp^D,bp^{D-1}q,\ldots,bq^D,
+\qquad \gcd(b,pq)=1,\quad D\ge0.
+\end{equation}
+Again, replace the occupied positions by the same number of initial positions.
+Fix a source chain and write $a=bp^{D-e}q^e$, where $0\le e\le D$.
+Group the multipliers $j\le t$ according to their unique expressions
+\[
+j=cp^{d-h}q^h,
+\qquad \gcd(c,pq)=1,\quad 0\le h\le d.
+\]
+For fixed $c,d$ with $cp^d\le t$, the allowed $h$ form an initial interval $0,\ldots,L_{c,d}$, because $p<q$.
+The products $aj$ lie at positions $e+h$ in the target chain with parameters $bc,D+d$.
+Their membership conditions are thus
+\[
+e+\{0,\ldots,L_{c,d}\}\subseteq E_{c,d}.
+\]
+Here $\gcd(bc,pq)=1$, distinct pairs $(c,d)$ give distinct target chains, and $E_{c,d}$ is the occupied set of the corresponding chain.
+The simultaneous compression replaces each of these sets by its initial interval.
+Lemma~\ref{lem:intervals} again applies.
+The group $c=1,d=0$ includes the requirement $a\in S$ itself; before and after compression it restricts $e$ to the source chain, so no additional starts with $e>D$ are counted.
+Consequently this operation also cannot decrease any $N_t$.
+
+Each operation preserves cardinality.
+Whenever an operation changes the set, it strictly decreases the sum of its elements, since both types of chain are listed in increasing numerical order.
+Repeatedly apply any operation that changes the set.
+The process must stop because that sum is a positive integer.
+Stability under the first operations gives (i), and stability under the second gives (ii).
+The inequalities for $N_t$ hold throughout the process.
+\end{proof}
+
+\newpage
+\section{The upper bound}
+
+For a positive integer $b$, let $\rad(b)$ be the product of its distinct prime divisors, with $\rad(1)=1$.
+
+\begin{lemma}\label{lem:radical}
+If $T$ satisfies (i) and (ii) of Lemma~\ref{lem:compression} and $|T|=n\ge3$, then every $b\in T$ satisfies
+\[
+\log\rad(b)=O(\log n\log\log n),
+\]
+with an absolute implied constant.
+\end{lemma}
+
+\begin{proof}
+The case $b=1$ is immediate.
+Write the distinct prime divisors of $b$ as $p_{i_1},\ldots,p_{i_m}$.
+All their squarefree products belong to $T$, so
+\begin{equation}\label{eq:prime-count}
+2^m\le n,\qquad m\le\log_2 n.
+\end{equation}
+The product $p_{i_1}\cdots p_{i_m}$ belongs to $T$.
+By successively replacing its factors by smaller primes, every product
+\[
+p_{j_1}\cdots p_{j_m},\qquad 1\le j_\ell\le i_\ell,
+\]
+belongs to $T$ as well, including products with repeated prime factors.
+There are $\prod_{\ell=1}^m i_\ell$ such ordered choices.
+Unique factorization shows that any resulting integer has at most $m!$ preimages, corresponding to permutations of its prime factors.
+It follows that
+\begin{equation}\label{eq:index-product}
+n\ge\frac{\prod_{\ell=1}^m i_\ell}{m!},
+\qquad
+\sum_{\ell=1}^m\log i_\ell\le\log n+\log(m!).
+\end{equation}
+Using \eqref{eq:nth-prime}, \eqref{eq:prime-count}, and \eqref{eq:index-product}, we get
+\begin{align*}
+\log\rad(b)
+&=\sum_{\ell=1}^m\log p_{i_\ell}
+=O\!\left(m+\sum_{\ell=1}^m\log i_\ell\right)\\
+&=O\bigl(\log n+m\log(m+1)\bigr)
+=O(\log n\log\log n).
+\end{align*}
+\end{proof}
+
+Let $T$ be the compression of an arbitrary $n$-element set $S$.
+If $p\le r_T(a)$ is prime, then $pa\in T$.
+Double counting the pairs $(a,p)$ with $a,pa\in T$, weighted by $\log p$, gives
+\begin{align}
+\sum_{a\in T}\vartheta(r_T(a))
+&\le \sum_{\substack{a\in T,\ p\text{ prime}\\pa\in T}}\log p\notag\\
+&=\sum_{b\in T}\sum_{p\mid b}\log p
+=\sum_{b\in T}\log\rad(b)
+=O(n\log n\log\log n).\label{eq:double-count}
+\end{align}
+The equality holds because $b/p\in T$ for every prime divisor $p$ of $b\in T$.
+By \eqref{eq:primes}, $r=O(1+\vartheta(r))$ for integers $r\ge1$.
+Combining \eqref{eq:tails}, Lemma~\ref{lem:compression}, and \eqref{eq:double-count}, we conclude that
+\[
+\sum_{a\in S}k_S(a)
+\le n+\sum_{a\in T}r_T(a)
+=O(n\log n\log\log n).
+\]
+
+\newpage
+\section{A matching construction}
+
+Fix a sufficiently large integer $y\ge4$.
+There are $q=\pi(\sqrt y)$ primes at most $\sqrt y$ and $m=\pi(y)-\pi(\sqrt y)$ primes in $(\sqrt y,y]$.
+Set
+\[
+L=\lfloor\log_2 y\rfloor,\qquad H=2qL.
+\]
+Let $S_y$ consist of the integers
+\begin{equation}\label{eq:construction}
+a=\prod_{p\le\sqrt y}p^{u_p}\prod_{\sqrt y<p\le y}p^{v_p},
+\qquad
+0\le u_p\le H,\qquad
+\sum_{\sqrt y<p\le y}v_p\le m,
+\end{equation}
+where all exponents are nonnegative integers.
+Unique factorization and stars-and-bars give
+\begin{equation}\label{eq:size}
+N(y):=|S_y|=(H+1)^q\binom{2m}{m}.
+\end{equation}
+
+Call an element good if
+\begin{equation}\label{eq:good}
+u_p\le H-L\quad(p\le\sqrt y),
+\qquad
+\sum_{\sqrt y<p\le y}v_p\le m-1.
+\end{equation}
+If $a$ is good and $1\le j\le y$, then $aj\in S_y$.
+Indeed, each small-prime exponent in $j$ is at most $L$.
+Also, $j$ has at most one prime factor greater than $\sqrt y$, counting multiplicity, since the product of two such factors exceeds $y$.
+The allowances in \eqref{eq:good} therefore suffice for every such $j$, giving $r_{S_y}(a)\ge y$.
+
+By Bernoulli's inequality, the fraction of small-prime exponent choices satisfying \eqref{eq:good} is
+\[
+\left(\frac{H-L+1}{H+1}\right)^q
+=\left(1-\frac{L}{H+1}\right)^q
+\ge1-\frac{qL}{H+1}\ge\frac12.
+\]
+The fraction of large-prime exponent choices satisfying it is
+\[
+\frac{\binom{2m-1}{m}}{\binom{2m}{m}}=\frac12.
+\]
+Thus at least a quarter of $S_y$ is good, and
+\begin{equation}\label{eq:lower-y}
+\sum_{a\in S_y}k_{S_y}(a)\ge\frac{N(y)y}{4}.
+\end{equation}
+
+The prime estimates yield $m=\Theta(y/\log y)$.
+Moreover $q\le\sqrt y$ and $H=O(\sqrt y\log y)$, so
+\[
+q\log(H+1)=O(\sqrt y\log y)=o(y/\log y).
+\]
+Since $\log\binom{2m}{m}=\Theta(m)$, equation~\eqref{eq:size} implies
+\begin{equation}\label{eq:asymptotic-size}
+\log N(y)=\Theta\!\left(\frac{y}{\log y}\right).
+\end{equation}
+
+\newpage
+To construct a set of any sufficiently large prescribed size $n$, fix $B>0$ such that $\log N(y)\le By/\log y$ for all large $y$.
+Choose a fixed $0<\varepsilon\le1/(2B)$ and put
+\[
+y=\lfloor\varepsilon\log n\log\log n\rfloor.
+\]
+For all sufficiently large $n$, we have $y\ge\log n$ and the construction applies, so
+\[
+\log N(y)\le\frac{By}{\log y}
+\le B\varepsilon\log n\le\tfrac12\log n.
+\]
+Thus $N(y)\le\sqrt n\le n/2$.
+Put $s=\lfloor n/N(y)\rfloor$, and take $s$ disjoint dilates of $S_y$.
+For example, if $Q>\max S_y$, the sets $Q^iS_y$ for $0\le i<s$ are disjoint.
+Their union contains $sN(y)>n-N(y)\ge n/2$ elements; pad it with arbitrary new positive integers to reach cardinality $n$.
+At least $sN(y)/4\ge n/8$ elements retain all their first $y$ multiples, since dilation preserves these relations and adding elements cannot destroy them.
+Consequently
+\[
+\sum_{a\in S}k_S(a)\ge\frac{ny}{8}
+=\Omega(n\log n\log\log n).
+\]
+This completes the proof of Theorem~\ref{thm:main}.
+
+\appendix
+\section{The prime estimates used above}
+
+For completeness, the bounds \eqref{eq:primes} follow from central binomial coefficients.
+Every prime in $(n,2n]$ divides $\binom{2n}{n}$, hence
+\[
+\vartheta(2n)-\vartheta(n)\le\log\binom{2n}{n}\le2n\log2.
+\]
+Summing over dyadic intervals and using monotonicity gives $\vartheta(x)=O(x)$.
+
+Define $\psi(x)=\sum_{p^h\le x}\log p$.
+For each prime $p$, the exponent of $p$ in $\binom{2n}{n}$ is
+\[
+\sum_{h\ge1}\left(\left\lfloor\frac{2n}{p^h}\right\rfloor
+-2\left\lfloor\frac{n}{p^h}\right\rfloor\right).
+\]
+Each summand is zero or one, and vanishes when $p^h>2n$.
+It follows that
+\[
+\psi(2n)\ge\log\binom{2n}{n}\ge2n\log2-\log(2n+1),
+\]
+where the last inequality uses the fact that the central binomial coefficient is the largest of the $2n+1$ coefficients whose sum is $2^{2n}$.
+By monotonicity, $\psi(x)\ge c_0x$ for some $c_0>0$ and all sufficiently large $x$.
+The terms with $h\ge2$ involve only primes at most $\sqrt x$, and each such prime contributes at most $\log x$ to their total.
+Thus
+\[
+0\le\psi(x)-\vartheta(x)\le\sqrt x\log x=o(x),
+\]
+which proves $\vartheta(x)\asymp x$.
+Finally,
+\[
+\frac{\vartheta(x)}{\log x}\le\pi(x)
+\le\sqrt x+\frac{2\vartheta(x)}{\log x},
+\]
+giving $\pi(x)\asymp x/\log x$.
+In particular, $\pi(x)\ge\sqrt x$ for all sufficiently large $x$.
+Taking $x=p_j$ gives $j\ge\sqrt{p_j}$, hence $\log p_j\le2\log j$ for all sufficiently large $j$.
+Enlarging the constant to cover the remaining indices proves \eqref{eq:nth-prime}.
+
+\end{document}
