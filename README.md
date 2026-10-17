@@ -23,7 +23,7 @@ Both theorems depend only on the standard axioms (`#print axioms` gives `[propex
 
 ## How this was made
 
-Everything in this repository was produced by AI models: Claude Opus 5.5 in Claude Code (entropy proof, both Lean formalizations, literature search), gpt-6-astra in Codex (compression proof, the rewrite, the fact-check of the related-work section), and Claude Fable 5.1 (review of the compression proof). The question came from a friend of the repository owner, who had the n log n lower bound from {1, …, n} and conjectured that it was tight. Both models independently showed that it is not, by finding the extra log log n factor: Codex in about 23 minutes, Claude in about an hour, including a first attempt lost to a connection error. [`docs/how-it-was-made.md`](docs/how-it-was-made.md) records which model produced each artifact, with settings, timings, token counts, tools and outside sources, and compares the two approaches.
+Everything in this repository was produced by AI models: Claude Opus 5.5 in Claude Code (entropy proof, both Lean formalizations, literature search), gpt-6-astra in Codex (compression proof, the rewrite, the fact-check of the related-work section), and Claude Fable 5.1 (review of the compression proof). The question was posed by Sagar Kale (personal communication), who observed that {1, …, n} gives order n log n and asked what the true order is. Both models independently found that it is n log n log log n: Codex in about 23 minutes, Claude in about an hour, including a first attempt lost to a connection error. [`docs/how-it-was-made.md`](docs/how-it-was-made.md) records which model produced each artifact, with settings, timings, token counts, tools and outside sources, and compares the two approaches.
 
 ## Statement
 

@@ -1,12 +1,12 @@
 # How these proofs were made
 
-Everything in this repository was produced by AI models, working from a question posed by a friend of the repository owner. The owner passed the question to the models and chose the next steps (typeset it, formalize it, compare the two proofs, publish); neither of them wrote any of the mathematics, proofs or code. This page records which model produced which artifact, with what settings, how long it took, which tools and outside sources it used, and how the two independent solutions differ. It is meant for readers interested in how current language models do mathematics, not only in the theorem.
+Everything in this repository was produced by AI models, working from a question posed by Sagar Kale (personal communication). The owner passed the question to the models and chose the next steps (typeset it, formalize it, compare the two proofs, publish); the models developed the proofs and wrote the exposition and code. This page records which model produced which artifact, with what settings, how long it took, which tools and outside sources it used, and how the two independent solutions differ. It is meant for readers interested in how current language models do mathematics, not only in the theorem.
 
 All times are UTC on 7 and 8 October 2026. Figures come from the session transcripts, which are not published.
 
 ## The prompt
 
-The owner sent the same message to Claude Code (Claude Opus 5.5) and to Codex (gpt-6-astra) one minute apart. Its second paragraph, starting "btw", quotes his friend:
+The owner sent the same message to Claude Code (Claude Opus 5.5) and to Codex (gpt-6-astra) one minute apart. Its second paragraph, starting "btw", quotes Sagar Kale:
 
 > Given set S of n positive integers a1 to an, define ki to be smallest positive integer such that ai times ki is not in S. Can you give an asymptomatic upper bound on sum_i ki? spend as much time as you possibly can to solve this problem and give a human readable proof
 >
@@ -14,7 +14,7 @@ The owner sent the same message to Claude Code (Claude Opus 5.5) and to Codex (g
 
 The typo "asymptomatic" was left in on purpose. Codex remarked on it ("I'll take 'asymptomatic' to mean 'asymptotic'"); Claude read it as "asymptotic" without comment.
 
-The friend knew that n log n was a lower bound and conjectured that it was tight. The conjecture is false: both models found the extra log log n factor independently.
+Sagar Kale had observed that {1, …, n} gives order n log n, the natural first guess for the answer. Both models independently found the extra log log n factor.
 
 ## Where each artifact comes from
 
